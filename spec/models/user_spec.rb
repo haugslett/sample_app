@@ -10,7 +10,6 @@
 #
 
 require 'spec_helper'
-
 describe User do
 	before { @user = User.new(	name: "Example User",
 								email: "user@example.com",
@@ -113,7 +112,7 @@ describe User do
 		end
 	end
 
-	describe "with a password that's too short" do
+	describe "with too short password" do
 		before { @user.password = @user.password_confirmation = "a" * 5 }
 		it { should be_invalid }
 	end
