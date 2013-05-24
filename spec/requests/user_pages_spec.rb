@@ -8,7 +8,7 @@ describe "User pages" do
 		let(:user) { FactoryGirl.create(:user) }
 		let!(:m1) { FactoryGirl.create(:micropost, user: user, content: "foo") }
 		let!(:m2) { FactoryGirl.create(:micropost, user: user, content: "bar") }
-
+		
 		before { visit user_path(user) }
 
 		it { should have_headline(user.name) }
@@ -20,6 +20,34 @@ describe "User pages" do
 			it { should have_content(user.microposts.count) }
 		end
 	end
+
+	describe "sidebar" do
+		let(:user) { FactoryGirl.create(:user) }
+		before { sign_in user }
+		describe "should have correct pluralization of micropost number" do
+
+			describe "with 0 microposts" do
+				before { visit root_path }
+				it { should have_content("0 microposts")}
+			end
+
+			describe "with 1 micropost" do
+				let!(:m1) { FactoryGirl.create(:micropost, user: user, content: "foo") }
+				before { visit root_path }
+
+				it { should have_content("1 micropost") }
+			end
+
+			describe "with 2 microposts" do
+				let!(:m1) { FactoryGirl.create(:micropost, user: user, content: "foo") }
+				let!(:m2) { FactoryGirl.create(:micropost, user: user, content: "bar") }
+				before { visit root_path }
+
+				it { should have_content("2 microposts")}
+			end
+		end
+	end
+
 
 	describe "signup" do
 
